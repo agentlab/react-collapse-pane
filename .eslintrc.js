@@ -8,5 +8,13 @@ module.exports = {
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+      }
+    ],
+  },
 }
