@@ -75,7 +75,7 @@ export const SplitPane: React.FC<SplitPaneProps> = (props) => {
     convertCollapseSizesToIndices(collapsedSizes)
   );
 
-  const { childPanes, handleDragStart, resizingIndex, dragState } = useSplitPaneResize({
+  const { childPanes, handleDragStart, resizingIndex, dragState, onMouseUp } = useSplitPaneResize({
     ...props,
     isLtr,
     isVertical,
@@ -127,6 +127,7 @@ export const SplitPane: React.FC<SplitPaneProps> = (props) => {
             resizerOptions={props.resizerOptions}
             collapseOptions={collapseOptions}
             onDragStarted={handleDragStart}
+            onMouseUp={onMouseUp}
             onCollapseToggle={toggleCollapse}
           />
         ) : null}

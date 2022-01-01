@@ -29,6 +29,7 @@ export interface ResizerProps {
   collapseOptions?: CollapseOptions;
   resizerOptions?: Partial<ResizerOptions>;
   onDragStarted: BeginDragCallback;
+  onMouseUp: () => void;
   onCollapseToggle: (paneIndex: number) => void;
   isCollapsed: boolean;
 }
@@ -38,6 +39,7 @@ export const Resizer = ({
   className,
   paneIndex,
   onDragStarted,
+  onMouseUp,
   resizerOptions,
   collapseOptions,
   onCollapseToggle,
@@ -54,6 +56,7 @@ export const Resizer = ({
 
   const handleMouseDown = useCallback(
     (event: React.MouseEvent) => {
+      //console.log('handleMouseDown');
       event.preventDefault();
       if (!isCollapsed) {
         onDragStarted({ index: paneIndex, position: event });
@@ -63,21 +66,34 @@ export const Resizer = ({
   );
   const handleTouchStart = useCallback(
     (event: React.TouchEvent) => {
-      event.preventDefault();
+      //console.log('handleTouchStart', event);
+      //event.preventDefault();
       if (!isCollapsed) {
         onDragStarted({ index: paneIndex, position: event.touches[0] });
       }
     },
     [paneIndex, isCollapsed, onDragStarted]
   );
+  const handleTouchEnd = useCallback(
+    (_event: React.TouchEvent) => {
+      //console.log('handleTouchEnd', _event);
+      //_event.preventDefault();
+      //if (!isCollapsed) {
+        onMouseUp();
+      //}
+    },
+    [/*isCollapsed,*/ onMouseUp]
+  );
   const handleButtonClick = useCallback(
     (event: React.MouseEvent) => {
+      //console.log('handleButtonClick');
       event.stopPropagation();
       onCollapseToggle(paneIndex);
     },
     [paneIndex, onCollapseToggle]
   );
   const handleButtonMousedown = useCallback((event: React.MouseEvent) => {
+    //console.log('handleButtonMousedown');
     event.stopPropagation();
   }, []);
 
@@ -129,7 +145,7 @@ export const Resizer = ({
       <div style={{ flex: `1 1 ${postButtonFlex}px` }} />
     </ButtonContainer>
   ) : null;
-
+//, touchAction: 'none'
   return (
     <div key="grabber.root" style={{ position: 'relative' }}>
       <ResizeGrabber
@@ -142,6 +158,7 @@ export const Resizer = ({
         className={classes}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         onMouseEnter={handleMouseEnterGrabber}
         onMouseLeave={handleMouseLeaveGrabber}
       >

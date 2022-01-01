@@ -30,6 +30,7 @@ interface SplitPaneResizeReturns {
   resizingIndex: Nullable<number>;
   handleDragStart: BeginDragCallback;
   dragState: DragState | null;
+  onMouseUp: () => void;
 }
 
 interface SplitPaneResizeOptions
@@ -105,7 +106,7 @@ export const useSplitPaneResize = (options: SplitPaneResizeOptions): SplitPaneRe
   });
 
   // STATE: if dragging, contains which pane is dragging and what the offset is.  If not dragging then null
-  const { dragState, beginDrag } = useDragState(isVertical, handleDragFinished);
+  const { dragState, beginDrag, onMouseUp } = useDragState(isVertical, handleDragFinished);
 
   const collapseSize = useCollapseSize({
     setMovedSizes,
@@ -180,5 +181,6 @@ export const useSplitPaneResize = (options: SplitPaneResizeOptions): SplitPaneRe
     resizingIndex: dragState?.index ?? null,
     handleDragStart,
     dragState,
+    onMouseUp,
   };
 };
